@@ -6,11 +6,13 @@ from aiogram.types import ReplyKeyboardRemove
 from decouple import config
 from aiogram.enums import ChatAction
 
-from ai import ai_response, ai_response_course_info, ai
+
 # local modules
 from state import UserState
 import keyboards as kb
-from api import create_user, get_user_info_by_tg_id
+from ai import ai_response, ai_response_course_info, ai_test
+
+# from api import create_user, get_user_info_by_tg_id
 
 TOKEN = config('TOKEN')
 bot = Bot(token=TOKEN)
@@ -31,21 +33,21 @@ user_lang = {"uz":"🇺🇿 uz", "eng":"🇺🇸 eng", "ru":"🇷🇺 ru"}
 @router.message(F.text.startswith("/start"))
 async def start(message: Message, state: FSMContext):
     user_id = message.from_user.id
-    try:
-        if get_user_info_by_tg_id(user_id):
-            lang = get_user_info_by_tg_id(user_id)["language"]
-            lang = user_lang[lang]
-            await message.answer(text=get_text(lang, 'message_text', 'menu'), reply_markup=kb.menu(lang))
-            await state.set_state(UserState.mainmenucheck)
-            await state.update_data(language=lang)
-    except:
-        await bot.send_message(
-            chat_id=user_id,
-            text=translations['start'],
-            reply_markup=kb.start_key(),
-            parse_mode='HTML'
-        )
-        await state.set_state(UserState.language)
+    # try:
+        # if get_user_info_by_tg_id(user_id):
+        #     lang = get_user_info_by_tg_id(user_id)["language"]
+        #     lang = user_lang[lang]
+        #     await message.answer(text=get_text(lang, 'message_text', 'menu'), reply_markup=kb.menu(lang))
+        #     await state.set_state(UserState.mainmenucheck)
+        #     await state.update_data(language=lang)
+    # except:
+    await bot.send_message(
+        chat_id=user_id,
+        text=translations['start'],
+        reply_markup=kb.start_key(),
+        parse_mode='HTML'
+    )
+    await state.set_state(UserState.language)
 
 
 @router.message(UserState.language)
@@ -110,17 +112,25 @@ async def conf(message: Message, state: FSMContext):
      data = await state.get_data()
      lang = data['language']
      if message.text == get_text(lang, "buttons", "confirm"):
-         if create_user(user_id, data["phone"], data["user_name"], lang):
-             msg_text = (
-                 f"{get_text(lang, 'message_text', 'telefon')} {data["phone"]}\n"
-                 f"{get_text(lang, 'message_text', 'ismi')} {data["user_name"]}"
-             )
+         msg_text = (
+             f"{get_text(lang, 'message_text', 'telefon')} {data["phone"]}\n"
+             f"{get_text(lang, 'message_text', 'ismi')} {data["user_name"]}"
+         )
 
-             await bot.send_message(chat_id=ChannelName, text=msg_text, reply_markup=kb.user_account(user_id,lang))
-             await message.answer(text=get_text(lang, 'message_text', 'menu'),reply_markup=kb.menu(lang))
-             await state.set_state(UserState.mainmenucheck)
-         else:
-             await message.answer(text=create_user(user_id, data["phone"], data["user_name"], lang), reply_markup=kb.conf(lang))
+         await bot.send_message(chat_id=ChannelName, text=msg_text, reply_markup=kb.user_account(user_id, lang))
+         await message.answer(text=get_text(lang, 'message_text', 'menu'), reply_markup=kb.menu(lang))
+         await state.set_state(UserState.mainmenucheck)
+         # if create_user(user_id, data["phone"], data["user_name"], lang):
+         #     msg_text = (
+         #         f"{get_text(lang, 'message_text', 'telefon')} {data["phone"]}\n"
+         #         f"{get_text(lang, 'message_text', 'ismi')} {data["user_name"]}"
+         #     )
+         #
+         #     await bot.send_message(chat_id=ChannelName, text=msg_text, reply_markup=kb.user_account(user_id,lang))
+         #     await message.answer(text=get_text(lang, 'message_text', 'menu'),reply_markup=kb.menu(lang))
+         #     await state.set_state(UserState.mainmenucheck)
+         # else:
+         #     await message.answer(text=create_user(user_id, data["phone"], data["user_name"], lang), reply_markup=kb.conf(lang))
      elif message.text == get_text(lang, "buttons", "rejected"):
          await bot.send_message(
              chat_id=user_id,
@@ -129,13 +139,6 @@ async def conf(message: Message, state: FSMContext):
              parse_mode='HTML'
          )
          await state.set_state(UserState.language)
-
-
-
-
-
-
-
 
 
 
@@ -156,15 +159,15 @@ async def main_menu_check(message: Message, state: FSMContext):
         await state.set_state(UserState.back_from_show_phone)
 
     elif message.text == get_text(lang, "buttons", "price"):
-
-        await bot.send_chat_action(chat_id=user_id, action=ChatAction.TYPING)
-        ai_response = await ai(lang)
-        await bot.send_message(chat_id=user_id, text=ai_response, reply_markup=kb.back(lang))
+        await message.answer(text=get_text(lang, 'message_text', 'course_price'), reply_markup=kb.back(lang))
         await state.set_state(UserState.back_from_price)
 
     elif message.text == get_text(lang, "buttons", "course_info_menu"):
         await message.answer(text=get_text(lang, 'message_text', 'ai'), reply_markup=kb.back(lang))
         await state.set_state(UserState.back_from_course_info_menu)
+    elif message.text == get_text(lang, "buttons", "test"):
+        await message.answer(text=get_text(lang, 'message_text', 'test'), reply_markup=kb.test_start(lang))
+        await state.set_state(UserState.test_start)
 
 
 
@@ -197,10 +200,10 @@ async def back_from_price(message: Message, state: FSMContext):
     if message.text == get_text(lang, "buttons", "back"):
         await message.answer(text=get_text(lang, 'message_text', 'menu'), reply_markup=kb.menu(lang))
         await state.set_state(UserState.mainmenucheck)
-    else:
-        await bot.send_chat_action(chat_id=user_id, action=ChatAction.TYPING)
-        response_text = await ai_response(lang, message.text)
-        await bot.send_message(chat_id=user_id, text=response_text, reply_markup=kb.back(lang))
+    # else:
+    #     await bot.send_chat_action(chat_id=user_id, action=ChatAction.TYPING)
+    #     response_text = await ai_response(lang, message.text)
+    #     await bot.send_message(chat_id=user_id, text=response_text, reply_markup=kb.back(lang))
 
 
 
@@ -219,6 +222,25 @@ async def back_from_show_location(message: Message, state: FSMContext):
         await bot.send_message(chat_id=user_id, text=response_text, reply_markup=kb.back(lang))
 
 
+
+@router.message(UserState.test_start)
+async def test_start(message: Message, state: FSMContext):
+    user_id = message.from_user.id
+    data = await state.get_data()
+    lang = data['language']
+    if message.text == get_text(lang, "buttons", "back"):
+        await message.answer(text=get_text(lang, 'message_text', 'menu'), reply_markup=kb.menu(lang))
+        await state.set_state(UserState.mainmenucheck)
+    elif message.text == get_text(lang, "buttons", "test_start"):
+        await bot.send_chat_action(chat_id=user_id, action=ChatAction.TYPING)
+        question = await ai_test(lang)
+        await bot.send_poll(
+            chat_id=message.chat.id,
+            question=f"{question[:250]}",
+            options=["A", "B", "C", "D"],
+            is_anonymous=True,
+            allows_multiple_answers=False
+        )
 
 
 
