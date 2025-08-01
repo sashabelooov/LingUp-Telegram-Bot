@@ -11,3 +11,4 @@ class UserState(StatesGroup):
     back_from_show_phone = State()
     back_from_price = State()
     back_from_course_info_menu = State()
+    test_start = State()
