@@ -35,7 +35,8 @@ def conf(lang):
 def menu(lang):
     keyboard = ReplyKeyboardBuilder()
     keyboard.add(KeyboardButton(text=get_text(lang, 'buttons', 'course_info_menu')), KeyboardButton(text=get_text(lang, 'buttons', 'price')),
-                 KeyboardButton(text=get_text(lang, 'buttons', 'contact_menu')), KeyboardButton(text=get_text(lang, 'buttons', 'loc')))
+                 KeyboardButton(text=get_text(lang, 'buttons', 'contact_menu')), KeyboardButton(text=get_text(lang, 'buttons', 'loc')),
+                 KeyboardButton(text=get_text(lang, 'buttons', 'test')))
     keyboard.adjust(2)
     return keyboard.as_markup(resize_keyboard=True)
 
@@ -59,4 +60,10 @@ def back(lang):
     return keyboard.as_markup(resize_keyboard=True)
 
 
+
+def test_start(lang):
+    keyboard = ReplyKeyboardBuilder()
+    keyboard.add(KeyboardButton(text=get_text(lang, 'buttons', 'test_start')), KeyboardButton(text=get_text(lang, 'buttons', 'back')))
+    keyboard.adjust(1)
+    return keyboard.as_markup(resize_keyboard=True)
 
