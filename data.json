@@ -16,9 +16,8 @@
           "course_price": "Kurs narxi: 499,000 so'm",
           "ai":"\uD83D\uDE4B\u200D♂\uFE0F Savollaringiz bo'lsa menga yozing:",
           "telefon": "Telefon raqam: ",
-          "ismi": "Ism: "
-
-
+          "ismi": "Ism: ",
+          "test": "Ingliz tili darajangizni tekshirib ko'rishni xohlaysizmi?\nUnda test yechish orqali darajangizni bilib oling. Buning uchun [🟢 Boshlash] tugmasini bosing."
 
         },
       "buttons": {
@@ -30,7 +29,9 @@
         "price": "\uD83D\uDCB5 Narx",
         "contact_menu": "☎\uFE0F Bog'lanish",
         "loc": "\uD83D\uDCCD Lokatsiya",
-        "account":"User Account"
+        "account":"User Account",
+        "test": "\uD83D\uDCDD Test",
+        "test_start": "\uD83D\uDFE2 Boshlash"
 
       }
     },
@@ -51,11 +52,8 @@
         "ai": "🙋‍♂️ Если у вас есть вопросы, напишите мне:",
         "telefon": "Номер телефона: ",
         "ismi": "Имя: ",
-        "confirmed_userinfo": "Вы подтверждаете свои данные?\n"
-
-
-
-
+        "confirmed_userinfo": "Вы подтверждаете свои данные?\n",
+        "test": "Хотите проверить свой уровень английского языка?\nТогда пройдите тест и узнайте свой уровень. Для этого нажмите кнопку [🟢 Начать]."
 
   },
   "buttons": {
@@ -67,7 +65,9 @@
         "price": "💵 Цена",
         "contact_menu": "☎️ Контакты",
         "loc": "📍 Локация",
-        "account": "User Account"
+        "account": "User Account",
+        "test": "\uD83D\uDCDD Тест",
+        "test_start": "🟢 Начать"
 
     }
   },
@@ -88,11 +88,10 @@
         "ai": "🙋‍♂️ If you have any questions, write to me:",
         "telefon": "Phone number: ",
         "ismi": "Name: ",
-        "confirmed_userinfo": "Do you confirm your information?\n"
+        "confirmed_userinfo": "Do you confirm your information?\n",
+        "test": "Do you want to check your English level?\nThen take the test and find out your level. To start, press the [🟢 Start] button."
 
-
-
-      },
+  },
       "buttons": {
         "contact": "📞 Send contact",
         "back": "⬅\uFE0F Back",
@@ -102,7 +101,9 @@
         "price": "💵 Price",
         "contact_menu": "☎️ Contact",
         "loc": "📍 Location",
-        "account": "User Account"
+        "account": "User Account",
+        "test": "\uD83D\uDCDD Test",
+        "test_start": "🟢 Start"
 
     }
   }
