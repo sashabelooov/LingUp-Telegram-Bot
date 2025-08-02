@@ -1,6 +1,6 @@
 import json
 from aiogram import Bot, Dispatcher, Router, F
-from aiogram.types import  Message
+from aiogram.types import Message, PollAnswer
 from aiogram.fsm.context import FSMContext
 from aiogram.types import ReplyKeyboardRemove
 from decouple import config
@@ -11,6 +11,7 @@ from aiogram.enums import ChatAction
 from state import UserState
 import keyboards as kb
 from ai import ai_response, ai_response_course_info, ai_test
+from test import *
 
 # from api import create_user, get_user_info_by_tg_id
 
@@ -233,15 +234,23 @@ async def test_start(message: Message, state: FSMContext):
         await state.set_state(UserState.mainmenucheck)
     elif message.text == get_text(lang, "buttons", "test_start"):
         await bot.send_chat_action(chat_id=user_id, action=ChatAction.TYPING)
-        question = await ai_test(lang)
+        question,answer = await beginner_test(1)
         await bot.send_poll(
             chat_id=message.chat.id,
-            question=f"{question[:250]}",
-            options=["A", "B", "C", "D"],
+            question=f"{question[0]}",
+            options=[f"A: {question[1]}", f"B: {question[2]}", f"C: {question[3]}", f"D: {question[4]}"],
             is_anonymous=True,
             allows_multiple_answers=False
         )
+        await state.set_state(UserState.questions)
 
 
-
-
+@router.poll_answer(UserState.questions)
+async def questions(poll_answer: PollAnswer, state: FSMContext):
+    # user_id = message.from_user.id
+    user_id = poll_answer.user.id
+    print(user_id)
+    data = await state.get_data()
+    lang = data['language']
+    res = poll_answer.option_ids
+    print(res)
