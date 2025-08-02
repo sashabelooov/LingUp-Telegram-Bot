@@ -1,19 +1,19 @@
 import json
 from aiogram import Bot, Dispatcher, Router, F
-from aiogram.types import Message, PollAnswer
+from aiogram.types import  Message
 from aiogram.fsm.context import FSMContext
 from aiogram.types import ReplyKeyboardRemove
 from decouple import config
 from aiogram.enums import ChatAction
+from aiogram.types import PollAnswer
+from aiogram import F
 
 
 # local modules
 from state import UserState
 import keyboards as kb
 from ai import ai_response, ai_response_course_info, ai_test
-from test import *
-
-# from api import create_user, get_user_info_by_tg_id
+from test import test
 
 TOKEN = config('TOKEN')
 bot = Bot(token=TOKEN)
@@ -224,33 +224,84 @@ async def back_from_show_location(message: Message, state: FSMContext):
 
 
 
+
 @router.message(UserState.test_start)
 async def test_start(message: Message, state: FSMContext):
     user_id = message.from_user.id
     data = await state.get_data()
     lang = data['language']
-    if message.text == get_text(lang, "buttons", "back"):
-        await message.answer(text=get_text(lang, 'message_text', 'menu'), reply_markup=kb.menu(lang))
-        await state.set_state(UserState.mainmenucheck)
-    elif message.text == get_text(lang, "buttons", "test_start"):
-        await bot.send_chat_action(chat_id=user_id, action=ChatAction.TYPING)
-        question,answer = await beginner_test(1)
+
+    question, answer = await test()
+
+    await state.update_data(correct_answer=int(answer))
+    await state.update_data(counter=0)
+
+    await bot.send_poll(
+        chat_id=message.chat.id,
+        question=question[0],
+        options=[
+            f"A) {question[1]}", f"B) {question[2]}",
+            f"C) {question[3]}", f"D) {question[4]}"
+        ],
+        is_anonymous=False,              # javob anonim bo‘lmasin
+        allows_multiple_answers=False,
+        reply_markup=kb.back(lang)
+    )
+
+    await state.set_state(UserState.questions)
+
+
+
+index_to_answer = {0:"A", 1:"B", 2:"C", 3:"D"}
+@router.poll_answer()
+async def handle_poll_answer(poll_answer: PollAnswer, state: FSMContext):
+    data = await state.get_data()
+    lang = data['language']
+    user_id = poll_answer.user.id
+    selected = poll_answer.option_ids[0]
+
+
+    data = await state.get_data()
+    correct = data.get("correct_answer")
+
+    if selected == correct:
+        await state.update_data(counter=data['counter'] + 1)
+        question, answer = await test()
+
+        await state.update_data(correct_answer=int(answer))
+
         await bot.send_poll(
-            chat_id=message.chat.id,
-            question=f"{question[0]}",
-            options=[f"A: {question[1]}", f"B: {question[2]}", f"C: {question[3]}", f"D: {question[4]}"],
-            is_anonymous=True,
-            allows_multiple_answers=False
+            chat_id=user_id,
+            question=question[0],
+            options=[
+                f"A) {question[1]}", f"B) {question[2]}",
+                f"C) {question[3]}", f"D) {question[4]}"
+            ],
+            is_anonymous=False,
+            allows_multiple_answers=False,
+            reply_markup=kb.back(lang)
         )
+
+        await state.set_state(UserState.questions)
+    else:
+        question, answer = await test()
+
+        await state.update_data(correct_answer=int(answer))
+
+        await bot.send_poll(
+            chat_id=user_id,
+            question=question[0],
+            options=[
+                f"A) {question[1]}", f"B) {question[2]}",
+                f"C) {question[3]}", f"D) {question[4]}"
+            ],
+            is_anonymous=False,
+            allows_multiple_answers=False,
+            reply_markup=kb.back(lang)
+        )
+
         await state.set_state(UserState.questions)
 
 
-@router.poll_answer(UserState.questions)
-async def questions(poll_answer: PollAnswer, state: FSMContext):
-    # user_id = message.from_user.id
-    user_id = poll_answer.user.id
-    print(user_id)
-    data = await state.get_data()
-    lang = data['language']
-    res = poll_answer.option_ids
-    print(res)
+
+
