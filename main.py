@@ -13,7 +13,7 @@ from aiogram import F
 from state import UserState
 import keyboards as kb
 from ai import ai_response, ai_response_course_info, ai_test
-from test import test
+from test import get_random_questions
 
 TOKEN = config('TOKEN')
 bot = Bot(token=TOKEN)
@@ -231,10 +231,11 @@ async def test_start(message: Message, state: FSMContext):
     data = await state.get_data()
     lang = data['language']
 
-    question, answer = await test()
+    question, answer = await get_random_questions()
 
     await state.update_data(correct_answer=int(answer))
     await state.update_data(counter=0)
+    await state.update_data(total_questions=1)
 
     await bot.send_poll(
         chat_id=message.chat.id,
@@ -243,7 +244,7 @@ async def test_start(message: Message, state: FSMContext):
             f"A) {question[1]}", f"B) {question[2]}",
             f"C) {question[3]}", f"D) {question[4]}"
         ],
-        is_anonymous=False,              # javob anonim bo‘lmasin
+        is_anonymous=False,
         allows_multiple_answers=False,
         reply_markup=kb.back(lang)
     )
@@ -252,7 +253,7 @@ async def test_start(message: Message, state: FSMContext):
 
 
 
-index_to_answer = {0:"A", 1:"B", 2:"C", 3:"D"}
+
 @router.poll_answer()
 async def handle_poll_answer(poll_answer: PollAnswer, state: FSMContext):
     data = await state.get_data()
@@ -260,47 +261,47 @@ async def handle_poll_answer(poll_answer: PollAnswer, state: FSMContext):
     user_id = poll_answer.user.id
     selected = poll_answer.option_ids[0]
 
-
-    data = await state.get_data()
     correct = data.get("correct_answer")
+    counter = data.get("counter", 0)
+    total = data.get("total_questions", 1)
 
+    # To‘g‘ri javob bo‘lsa, counter ni oshiramiz
     if selected == correct:
-        await state.update_data(counter=data['counter'] + 1)
-        question, answer = await test()
+        counter += 1
 
-        await state.update_data(correct_answer=int(answer))
+    total += 1
 
-        await bot.send_poll(
-            chat_id=user_id,
-            question=question[0],
-            options=[
-                f"A) {question[1]}", f"B) {question[2]}",
-                f"C) {question[3]}", f"D) {question[4]}"
-            ],
-            is_anonymous=False,
-            allows_multiple_answers=False,
-            reply_markup=kb.back(lang)
-        )
+    if total > 10:
+        msg_text = get_text(lang, 'message_text', 'result_test')
+        replace_counter = msg_text.format(counter=counter)
 
-        await state.set_state(UserState.questions)
-    else:
-        question, answer = await test()
+        await bot.send_message(chat_id=user_id, text=replace_counter, reply_markup=ReplyKeyboardRemove())
+        await bot.send_message(chat_id=user_id, text=get_text(lang, 'message_text', 'menu'), reply_markup=kb.menu(lang))
+        await state.set_state(UserState.mainmenucheck)
+        return
 
-        await state.update_data(correct_answer=int(answer))
+    # Yangi savol yuboriladi
+    question, answer = await get_random_questions()
+    await state.update_data(correct_answer=int(answer))
+    await state.update_data(counter=counter)
+    await state.update_data(total_questions=total)
 
-        await bot.send_poll(
-            chat_id=user_id,
-            question=question[0],
-            options=[
-                f"A) {question[1]}", f"B) {question[2]}",
-                f"C) {question[3]}", f"D) {question[4]}"
-            ],
-            is_anonymous=False,
-            allows_multiple_answers=False,
-            reply_markup=kb.back(lang)
-        )
+    await bot.send_poll(
+        chat_id=user_id,
+        question=question[0],
+        options=[
+            f"A) {question[1]}", f"B) {question[2]}",
+            f"C) {question[3]}", f"D) {question[4]}"
+        ],
+        is_anonymous=False,
+        allows_multiple_answers=False,
+        reply_markup=kb.back(lang)
+    )
 
-        await state.set_state(UserState.questions)
+    await state.set_state(UserState.questions)
+
+
+
 
 
 
