@@ -17,7 +17,8 @@
           "ai":"\uD83D\uDE4B\u200D♂\uFE0F Savollaringiz bo'lsa menga yozing:",
           "telefon": "Telefon raqam: ",
           "ismi": "Ism: ",
-          "test": "Ingliz tili darajangizni tekshirib ko'rishni xohlaysizmi?\nUnda test yechish orqali darajangizni bilib oling. Buning uchun [🟢 Boshlash] tugmasini bosing."
+          "test": "Ingliz tili darajangizni tekshirib ko'rishni xohlaysizmi?\nUnda test yechish orqali darajangizni bilib oling. Buning uchun [🟢 Boshlash] tugmasini bosing.",
+          "result_test": "✅ Test yakunlandi!\n\nSiz {counter} ta savolga to‘g‘ri javob berdingiz.\n\n👏 Yaxshi ish!"
 
         },
       "buttons": {
@@ -53,7 +54,8 @@
         "telefon": "Номер телефона: ",
         "ismi": "Имя: ",
         "confirmed_userinfo": "Вы подтверждаете свои данные?\n",
-        "test": "Хотите проверить свой уровень английского языка?\nТогда пройдите тест и узнайте свой уровень. Для этого нажмите кнопку [🟢 Начать]."
+        "test": "Хотите проверить свой уровень английского языка?\nТогда пройдите тест и узнайте свой уровень. Для этого нажмите кнопку [🟢 Начать].",
+        "result_test": "✅ Тест завершён!\n\nВы правильно ответили на {counter} вопросов.\n\n\uD83D\uDC4F Отличная работа!"
 
   },
   "buttons": {
@@ -89,7 +91,8 @@
         "telefon": "Phone number: ",
         "ismi": "Name: ",
         "confirmed_userinfo": "Do you confirm your information?\n",
-        "test": "Do you want to check your English level?\nThen take the test and find out your level. To start, press the [🟢 Start] button."
+        "test": "Do you want to check your English level?\nThen take the test and find out your level. To start, press the [🟢 Start] button.",
+        "result_test": "✅ Test completed!\\n\\nYou answered {counter} questions correctly.\\n\\n\uD83D\uDC4F Great job!"
 
   },
       "buttons": {
