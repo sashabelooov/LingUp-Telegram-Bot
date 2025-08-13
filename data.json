@@ -1,113 +1,116 @@
 {
-    "start": "Hello! Welcome to the AIM Educational Center's Telegram bot \uD83D\uDE0A\n\nAssalomu alaykum! AIM o'quv markazining telegram botiga xush kelibsiz\uD83D\uDE0A\n\nЗдравствуйте! Добро пожаловать в телеграм-бот учебного центра AIM\uD83D\uDE0A",
-    "\uD83C\uDDFA\uD83C\uDDFF uz":{
-        "message_text":{
-          "phone":"Iltimos telefon raqamingizni kiritinf\nMisol uchun — +998991234567",
-          "name": "Iltimos ismingizni kiriting:\nMisol uchun: Ismoil",
-          "error_phone": "Iltimos telefon raqamni to'g'ri kiriting\nMisol uchun - +998991234567",
-          "error_name": "Iltimos isimni to'g'ri kiriting\nMisol uchun - Ismoil",
-          "confirmed_userinfo": "Ma'lumotlaringizni tasdiqlaysizmi?\n",
-          "conf_phone": "\uD83D\uDCDE Telefon raqamingiz: ",
-          "conf_name": "\uD83D\uDCDD Ismingiz: ",
-          "tg_id": "\uD83C\uDD94 tg_id: ",
-          "menu": "Asosiy menu",
-          "show_location": "Bizni o'quv markazimizga tashrif buyurishingiz uchun lokatsiya \uD83D\uDE0A",
-          "show_phone": "Biz bilan bog'lanish uchun telefon raqam:\n\uD83D\uDCDE — +998992458855",
-          "course_price": "Kurs narxi: 499,000 so'm",
-          "ai":"\uD83D\uDE4B\u200D♂\uFE0F Savollaringiz bo'lsa menga yozing:",
-          "telefon": "Telefon raqam: ",
-          "ismi": "Ism: ",
-          "test": "Ingliz tili darajangizni tekshirib ko'rishni xohlaysizmi?\nUnda test yechish orqali darajangizni bilib oling. Buning uchun [🟢 Boshlash] tugmasini bosing.",
-          "result_test": "✅ Test yakunlandi!\n\nSiz {counter} ta savolga to‘g‘ri javob berdingiz.\n\n👏 Yaxshi ish!"
-
+    "start": "Hello! Welcome to the LingUp Educational Center's Telegram bot \uD83D\uDE0A\n\nAssalomu alaykum! LingUp o'quv markazining telegram botiga xush kelibsiz\uD83D\uDE0A\n\nЗдравствуйте! Добро пожаловать в телеграм-бот учебного центра LingUp\uD83D\uDE0A",
+    "\uD83C\uDDFA\uD83C\uDDFF uz": {
+        "message_text": {
+            "phone": "Iltimos telefon raqamingizni kiriting\nMisol uchun — +998991234567",
+            "name": "Iltimos ismingizni kiriting:\nMisol uchun: Ismoil",
+            "error_phone": "Iltimos telefon raqamingizni to'g'ri kiriting\nMisol uchun - +998991234567",
+            "error_name": "Iltimos ismingizni to'g'ri kiriting\nMisol uchun - Ismoil",
+            "confirmed_userinfo": "Ma'lumotlaringizni tasdiqlaysizmi?\n",
+            "conf_phone": "\uD83D\uDCDE Telefon raqamingiz: ",
+            "conf_name": "\uD83D\uDCDD Ismingiz: ",
+            "tg_id": "\uD83C\uDD94 tg_id: ",
+            "menu": "Asosiy menu",
+            "show_location": "Bizni o'quv markazimizga tashrif buyurishingiz uchun lokatsiya \uD83D\uDE0A",
+            "show_phone": "Biz bilan bog'lanish uchun telefon raqam:\n\uD83D\uDCDE — +998992458855",
+            "course_price": "Kurs narxi: 499,000 so'm",
+            "ai": "\uD83D\uDE4B\u200D♂️ Savollaringiz bo'lsa menga yozing:",
+            "telefon": "\uD83C\uDD95 Yangi Kontaktni yuborish\nTelefon raqami: ",
+            "ismi": "\uD83D\uDCDD To'liq ismingiz: ",
+            "test": "Ingliz tili darajangizni tekshirib ko'rishni xohlaysizmi?\nUnda test yechish orqali darajangizni bilib oling. Buning uchun [🟢 Boshlash] tugmasini bosing.",
+            "result_test": "✅ Test yakunlandi!\n\nSiz {counter} ta savolga to‘g‘ri javob berdingiz.\n\n👏 Yaxshi ish!",
+            "change_language": "Tilingizni o'zgartirmoqchi bo'lsangiz, quyidagi tildan birini tanlang \uD83D\uDE0A",
+            "language_changed": "Tilingiz muvaffaqiyatli o'zgartirildi \uD83D\uDE0A"
         },
-      "buttons": {
-        "contact":"📞 Contactni jo'natish",
-        "back": "⬅\uFE0F Orqaga",
-        "confirm": "✅ Tasdiqlash",
-        "rejected": "❌ Bekor qilish",
-        "course_info_menu": "ℹ\uFE0F Kurs haqida malumot",
-        "price": "\uD83D\uDCB5 Narx",
-        "contact_menu": "☎\uFE0F Bog'lanish",
-        "loc": "\uD83D\uDCCD Lokatsiya",
-        "account":"User Account",
-        "test": "\uD83D\uDCDD Test",
-        "test_start": "\uD83D\uDFE2 Boshlash"
-
-      }
+        "buttons": {
+            "contact": "📞 Kontaktni yuborish",
+            "back": "⬅️ Orqaga",
+            "confirm": "✅ Tasdiqlash",
+            "rejected": "❌ Bekor qilish",
+            "course_info_menu": "ℹ️ Kurs haqida ma'lumot",
+            "price": "\uD83D\uDCB5 Narx",
+            "contact_menu": "☎️ Bog'lanish",
+            "loc": "\uD83D\uDCCD Lokatsiya",
+            "account": "Hisobim",
+            "test": "\uD83D\uDCDD Test",
+            "test_start": "🟢 Boshlash",
+            "change_lang": "\uD83C\uDDFA\uD83C\uDDF8\uD83C\uDDFA\uD83C\uDDFF\uD83C\uDDF7\uD83C\uDDFA Tilni o'zgartirish"
+        }
     },
-  "\uD83C\uDDF7\uD83C\uDDFA ru": {
-  "message_text": {
-        "phone": "Пожалуйста, введите ваш номер телефона:\nНапример: +998991234567",
-        "name": "Пожалуйста, введите ваше имя:\nНапример: Иван",
-        "error_phone": "Пожалуйста, введите номер телефона правильно\nНапример: +998991234567",
-        "error_name": "Пожалуйста, введите имя правильно\nНапример: Исмоил",
-        "confirmation_or_rejected": "Подтверждаете ли вы свои данные?",
-        "conf_phone": "📞 Ваш номер телефона: ",
-        "conf_name": "📝 Ваше имя: ",
-        "tg_id": "\uD83C\uDD94 tg_id: ",
-        "menu": "Главное меню",
-        "show_location": "Будем рады вашему визиту в наш учебный центр 😊",
-        "show_phone": "Наш номер телефона для связи:\n📞 — +998992458855",
-        "course_price": "Цена курса: 499,000 сум",
-        "ai": "🙋‍♂️ Если у вас есть вопросы, напишите мне:",
-        "telefon": "Номер телефона: ",
-        "ismi": "Имя: ",
-        "confirmed_userinfo": "Вы подтверждаете свои данные?\n",
-        "test": "Хотите проверить свой уровень английского языка?\nТогда пройдите тест и узнайте свой уровень. Для этого нажмите кнопку [🟢 Начать].",
-        "result_test": "✅ Тест завершён!\n\nВы правильно ответили на {counter} вопросов.\n\n\uD83D\uDC4F Отличная работа!"
-
-  },
-  "buttons": {
-        "contact": "📞 Отправить контакт",
-        "back": "⬅\uFE0F Назад",
-        "confirm": "✅ Подтвердить",
-        "rejected": "❌ Отменить",
-        "course_info_menu": "ℹ️ Информация о курсе",
-        "price": "💵 Цена",
-        "contact_menu": "☎️ Контакты",
-        "loc": "📍 Локация",
-        "account": "User Account",
-        "test": "\uD83D\uDCDD Тест",
-        "test_start": "🟢 Начать"
-
+    "\uD83C\uDDF7\uD83C\uDDFA ru": {
+        "message_text": {
+            "phone": "Пожалуйста, введите ваш номер телефона:\nНапример: +998991234567",
+            "name": "Пожалуйста, введите ваше имя:\nНапример: Иван",
+            "error_phone": "Пожалуйста, введите номер телефона правильно\nНапример: +998991234567",
+            "error_name": "Пожалуйста, введите имя правильно\nНапример: Исмоил",
+            "confirmation_or_rejected": "Подтверждаете ли вы свои данные?",
+            "conf_phone": "📞 Ваш номер телефона: ",
+            "conf_name": "📝 Ваше имя: ",
+            "tg_id": "\uD83C\uDD94 tg_id: ",
+            "menu": "Главное меню",
+            "show_location": "Будем рады вашему визиту в наш учебный центр 😊",
+            "show_phone": "Наш номер телефона для связи:\n📞 — +998992458855",
+            "course_price": "Цена курса: 499,000 сум",
+            "ai": "🙋‍♂️ Если у вас есть вопросы, напишите мне:",
+            "telefon": "Номер телефона: ",
+            "ismi": "Имя: ",
+            "confirmed_userinfo": "Вы подтверждаете свои данные?\n",
+            "test": "Хотите проверить свой уровень английского языка?\nТогда пройдите тест и узнайте свой уровень. Для этого нажмите кнопку [🟢 Начать].",
+            "result_test": "✅ Тест завершён!\n\nВы правильно ответили на {counter} вопросов.\n\n\uD83D\uDC4F Отличная работа!",
+            "change_language": "Если вы хотите изменить язык, выберите один из следующих языков \uD83D\uDE0A",
+            "language_changed": "Ваш язык был успешно изменен \uD83D\uDE0A"
+        },
+        "buttons": {
+            "contact": "📞 Отправить контакт",
+            "back": "⬅️ Назад",
+            "confirm": "✅ Подтвердить",
+            "rejected": "❌ Отменить",
+            "course_info_menu": "ℹ️ Информация о курсе",
+            "price": "💵 Цена",
+            "contact_menu": "☎️ Контакты",
+            "loc": "📍 Локация",
+            "account": "Аккаунт",
+            "test": "\uD83D\uDCDD Тест",
+            "test_start": "🟢 Начать",
+            "change_lang": "\uD83C\uDDFA\uD83C\uDDF8\uD83C\uDDFA\uD83C\uDDFF\uD83C\uDDF7\uD83C\uDDFA Изменить язык"
+        }
+    },
+    "\uD83C\uDDFA\uD83C\uDDF8 eng": {
+        "message_text": {
+            "phone": "Please enter your phone number:\nFor example: +998991234567",
+            "name": "Please enter your name:\nFor example: Smith",
+            "error_phone": "Please enter the phone number correctly\nFor example: +998991234567",
+            "error_name": "Please enter the name correctly\nFor example: Ismoil",
+            "confirmation_or_rejected": "Do you confirm your details?",
+            "conf_phone": "📞 Your phone number: ",
+            "conf_name": "📝 Your name: ",
+            "tg_id": "\uD83C\uDD94 tg_id: ",
+            "menu": "Main menu",
+            "show_location": "We’d be happy to welcome you to our learning center 😊",
+            "show_phone": "Our contact phone number:\n📞 — +998992458855",
+            "course_price": "Course price: 499,000 UZS",
+            "ai": "🙋‍♂️ If you have any questions, write to me:",
+            "telefon": "Phone number: ",
+            "ismi": "Name: ",
+            "confirmed_userinfo": "Do you confirm your information?\n",
+            "test": "Do you want to check your English level?\nThen take the test and find out your level. To start, press the [🟢 Start] button.",
+            "result_test": "✅ Test completed!\n\nYou answered {counter} questions correctly.\n\n\uD83D\uDC4F Great job!",
+            "change_language": "If you want to change the language, choose one of the following \uD83D\uDE0A",
+            "language_changed": "Your language has been successfully changed \uD83D\uDE0A"
+        },
+        "buttons": {
+            "contact": "📞 Send contact",
+            "back": "⬅️ Back",
+            "confirm": "✅ Confirm",
+            "rejected": "❌ Cancel",
+            "course_info_menu": "ℹ️ Course Information",
+            "price": "💵 Price",
+            "contact_menu": "☎️ Contact",
+            "loc": "📍 Location",
+            "account": "User Account",
+            "test": "\uD83D\uDCDD Test",
+            "test_start": "🟢 Start",
+            "change_lang": "\uD83C\uDDFA\uD83C\uDDF8\uD83C\uDDFA\uD83C\uDDFF\uD83C\uDDF7\uD83C\uDDFA Change Language"
+        }
     }
-  },
-  "\uD83C\uDDFA\uD83C\uDDF8 eng": {
-  "message_text": {
-        "phone": "Please enter your phone number:\nFor example: +998991234567",
-        "name": "Please enter your name:\nFor example: Smith",
-        "error_phone": "Please enter the phone number correctly\nFor example: +998991234567",
-        "error_name": "Please enter the name correctly\nFor example: Ismoil",
-        "confirmation_or_rejected": "Do you confirm your details?",
-        "conf_phone": "📞 Your phone number: ",
-        "conf_name": "📝 Your name: ",
-        "tg_id": "\uD83C\uDD94 tg_id: ",
-        "menu": "Main menu",
-        "show_location": "We’d be happy to welcome you to our learning center 😊",
-        "show_phone": "Our contact phone number:\n📞 — +998992458855",
-        "course_price": "Course price: 499,000 UZS",
-        "ai": "🙋‍♂️ If you have any questions, write to me:",
-        "telefon": "Phone number: ",
-        "ismi": "Name: ",
-        "confirmed_userinfo": "Do you confirm your information?\n",
-        "test": "Do you want to check your English level?\nThen take the test and find out your level. To start, press the [🟢 Start] button.",
-        "result_test": "✅ Test completed!\\n\\nYou answered {counter} questions correctly.\\n\\n\uD83D\uDC4F Great job!"
-
-  },
-      "buttons": {
-        "contact": "📞 Send contact",
-        "back": "⬅\uFE0F Back",
-        "confirm": "✅ Confirm",
-        "rejected": "❌ Cancel",
-        "course_info_menu": "ℹ️ Course Information",
-        "price": "💵 Price",
-        "contact_menu": "☎️ Contact",
-        "loc": "📍 Location",
-        "account": "User Account",
-        "test": "\uD83D\uDCDD Test",
-        "test_start": "🟢 Start"
-
-    }
-  }
 }

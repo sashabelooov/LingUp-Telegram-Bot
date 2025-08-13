@@ -12,43 +12,52 @@ from aiogram import F
 # local modules
 from state import UserState
 import keyboards as kb
-from ai import ai_response, ai_response_course_info, ai_test
+from ai import ai_response_course_info
 from test import get_random_questions
+from api import create_user
 
 TOKEN = config('TOKEN')
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
 router = Router()
-ChannelName = "@zayavkalar_infosi"
+ChannelName = "@LingUp"
 
 
 with open("data.json", "r", encoding="utf-8") as file:
     translations = json.load(file)
 
 
+
+
 def get_text(lang, category, key):
     return translations.get(lang, {}).get(category, {}).get(key, f"[{key}]")
 
 
-user_lang = {"uz":"🇺🇿 uz", "eng":"🇺🇸 eng", "ru":"🇷🇺 ru"}
 @router.message(F.text.startswith("/start"))
 async def start(message: Message, state: FSMContext):
     user_id = message.from_user.id
-    # try:
-        # if get_user_info_by_tg_id(user_id):
-        #     lang = get_user_info_by_tg_id(user_id)["language"]
-        #     lang = user_lang[lang]
-        #     await message.answer(text=get_text(lang, 'message_text', 'menu'), reply_markup=kb.menu(lang))
-        #     await state.set_state(UserState.mainmenucheck)
-        #     await state.update_data(language=lang)
-    # except:
-    await bot.send_message(
-        chat_id=user_id,
-        text=translations['start'],
-        reply_markup=kb.start_key(),
-        parse_mode='HTML'
-    )
-    await state.set_state(UserState.language)
+
+    try:
+        with open("user_lang.json", "r", encoding="utf-8") as file:
+            data = json.load(file)
+            lang = data.get("user_lang", {}).get(str(user_id), [])[-1]
+            user = data.get("user", [])
+
+            if user_id in user:
+                await message.answer(text=get_text(lang, 'message_text', 'menu'), reply_markup=kb.menu(lang))
+                await state.set_state(UserState.mainmenucheck)
+                await state.update_data(language=lang)
+            else:
+                raise ValueError(f"User {user_id} not found in the user list.")  # Handle missing user
+    except Exception as e:
+        print(f"An error occurred: {e}")  # Print the error to debug
+        await bot.send_message(
+            chat_id=user_id,
+            text=translations['start'],
+            reply_markup=kb.start_key(),
+            parse_mode='HTML'
+        )
+        await state.set_state(UserState.language)
 
 
 @router.message(UserState.language)
@@ -112,26 +121,36 @@ async def conf(message: Message, state: FSMContext):
      user_id = message.from_user.id
      data = await state.get_data()
      lang = data['language']
+
+     file_path = "user_lang.json"
      if message.text == get_text(lang, "buttons", "confirm"):
+         await bot.send_chat_action(chat_id=user_id, action=ChatAction.TYPING)
+         await bot.send_chat_action(chat_id=user_id, action=ChatAction.TYPING)
          msg_text = (
              f"{get_text(lang, 'message_text', 'telefon')} {data["phone"]}\n"
              f"{get_text(lang, 'message_text', 'ismi')} {data["user_name"]}"
          )
+         if create_user(data["user_name"], data["phone"], user_id):
+             try:
+                await bot.send_message(chat_id=-4937963060, text=msg_text, reply_markup=kb.user_account(user_id, lang))
+             except Exception as e:
+                 print(f"Can't send message to channel: {e}")
 
-         await bot.send_message(chat_id=ChannelName, text=msg_text, reply_markup=kb.user_account(user_id, lang))
-         await message.answer(text=get_text(lang, 'message_text', 'menu'), reply_markup=kb.menu(lang))
-         await state.set_state(UserState.mainmenucheck)
-         # if create_user(user_id, data["phone"], data["user_name"], lang):
-         #     msg_text = (
-         #         f"{get_text(lang, 'message_text', 'telefon')} {data["phone"]}\n"
-         #         f"{get_text(lang, 'message_text', 'ismi')} {data["user_name"]}"
-         #     )
-         #
-         #     await bot.send_message(chat_id=ChannelName, text=msg_text, reply_markup=kb.user_account(user_id,lang))
-         #     await message.answer(text=get_text(lang, 'message_text', 'menu'),reply_markup=kb.menu(lang))
-         #     await state.set_state(UserState.mainmenucheck)
-         # else:
-         #     await message.answer(text=create_user(user_id, data["phone"], data["user_name"], lang), reply_markup=kb.conf(lang))
+             await message.answer(text=get_text(lang, 'message_text', 'menu'), reply_markup=kb.menu(lang))
+             await state.set_state(UserState.mainmenucheck)
+
+
+             try:
+                 with open(file_path, "w") as w:
+                     data = {
+                         "user_lang":{user_id:[lang]},
+                         "user":[user_id],
+                     }
+                     json.dump(data, w, indent=4)
+             except FileNotFoundError:
+                 print(f"Can't Open File: {file_path}")
+
+
      elif message.text == get_text(lang, "buttons", "rejected"):
          await bot.send_message(
              chat_id=user_id,
@@ -170,6 +189,45 @@ async def main_menu_check(message: Message, state: FSMContext):
         await message.answer(text=get_text(lang, 'message_text', 'test'), reply_markup=kb.test_start(lang))
         await state.set_state(UserState.test_start)
 
+    elif message.text == get_text(lang, "buttons", "change_lang"):
+        await message.answer(text=get_text(lang, 'message_text', 'change_language'), reply_markup=kb.change_language(lang))
+        await state.set_state(UserState.change_language)
+
+
+@router.message(UserState.change_language)
+async def change_language(message: Message, state: FSMContext):
+    user_id = message.from_user.id
+    data = await state.get_data()
+    lang = data['language']
+
+    if message.text == get_text(lang, "buttons", "back"):  # "Back" tugmasi bosilsa
+        await message.answer(text=get_text(lang, 'message_text', 'menu'), reply_markup=kb.menu(lang))
+        await state.set_state(UserState.mainmenucheck)
+
+    elif message.text in {"🇺🇸 eng", "🇺🇿 uz", "🇷🇺 ru"}:  # Yangi tilni tanladi
+        new_lang = message.text
+        await state.update_data(language=new_lang)
+
+        file_path = "user_lang.json"
+        try:
+            with open(file_path, "r", encoding="utf-8") as file:
+                data = json.load(file)
+
+            if str(user_id) in data['user_lang']:
+                data['user_lang'][str(user_id)] = [new_lang]
+            else:
+                data['user_lang'][str(user_id)] = [new_lang]
+
+            with open(file_path, "w", encoding="utf-8") as file:
+                json.dump(data, file, ensure_ascii=False, indent=4)
+
+            await message.answer(text=get_text(new_lang, 'message_text', 'language_changed'))
+            await message.answer(text=get_text(new_lang, 'message_text', 'menu'), reply_markup=kb.menu(new_lang))
+            await state.set_state(UserState.mainmenucheck)
+        except Exception as e:
+            print(f"Xatolik yuz berdi: {e}")
+
+
 
 
 
@@ -201,10 +259,7 @@ async def back_from_price(message: Message, state: FSMContext):
     if message.text == get_text(lang, "buttons", "back"):
         await message.answer(text=get_text(lang, 'message_text', 'menu'), reply_markup=kb.menu(lang))
         await state.set_state(UserState.mainmenucheck)
-    # else:
-    #     await bot.send_chat_action(chat_id=user_id, action=ChatAction.TYPING)
-    #     response_text = await ai_response(lang, message.text)
-    #     await bot.send_message(chat_id=user_id, text=response_text, reply_markup=kb.back(lang))
+
 
 
 

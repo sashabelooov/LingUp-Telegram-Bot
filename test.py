@@ -109,3 +109,4 @@ async def get_random_questions():
     correct_answer_index = answer_to_index[correct_answer_letter]
 
     return question, correct_answer_index
+

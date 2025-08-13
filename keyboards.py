@@ -36,8 +36,9 @@ def menu(lang):
     keyboard = ReplyKeyboardBuilder()
     keyboard.add(KeyboardButton(text=get_text(lang, 'buttons', 'course_info_menu')), KeyboardButton(text=get_text(lang, 'buttons', 'price')),
                  KeyboardButton(text=get_text(lang, 'buttons', 'contact_menu')), KeyboardButton(text=get_text(lang, 'buttons', 'loc')),
-                 KeyboardButton(text=get_text(lang, 'buttons', 'test')))
-    keyboard.adjust(2)
+                 KeyboardButton(text=get_text(lang, 'buttons', 'test')),
+                 KeyboardButton(text=get_text(lang, 'buttons', 'change_lang')))
+    keyboard.adjust(2,2,1,1)
     return keyboard.as_markup(resize_keyboard=True)
 
 
@@ -54,8 +55,7 @@ def user_account(user_id, lang):
 
 def back(lang):
     keyboard = ReplyKeyboardBuilder()
-    keyboard.add(
-                 KeyboardButton(text=get_text(lang, 'buttons', 'back')))
+    keyboard.add(KeyboardButton(text=get_text(lang, 'buttons', 'back')))
     keyboard.adjust(1)
     return keyboard.as_markup(resize_keyboard=True)
 
@@ -67,3 +67,9 @@ def test_start(lang):
     keyboard.adjust(1)
     return keyboard.as_markup(resize_keyboard=True)
 
+def change_language(lang):
+    keyboard = ReplyKeyboardBuilder()
+    keyboard.add(KeyboardButton(text=f"🇺🇸 eng"), KeyboardButton(text=f"🇺🇿 uz"), KeyboardButton(text=f"🇷🇺 ru"),
+                 KeyboardButton(text=get_text(lang, 'buttons', 'back')))
+    keyboard.adjust(3,1)
+    return keyboard.as_markup(resize_keyboard=True)

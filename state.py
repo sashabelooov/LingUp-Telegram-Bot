@@ -13,3 +13,4 @@ class UserState(StatesGroup):
     back_from_course_info_menu = State()
     test_start = State()
     questions = State()
+    change_language = State()
