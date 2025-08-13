@@ -20,7 +20,6 @@ def create_user(full_name, phone, tg_id, description=None):
 
     try:
         response = requests.post(url=url, data=payload)
-        print(response.json(),"keldi")
         if response.status_code == 201:
             print("User created successfully.")
             return True

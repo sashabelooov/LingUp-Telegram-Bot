@@ -32,6 +32,12 @@ with open("data.json", "r", encoding="utf-8") as file:
 def get_text(lang, category, key):
     return translations.get(lang, {}).get(category, {}).get(key, f"[{key}]")
 
+correct_languages = {
+    "uz": "🇺🇿 uz",
+    "ru": "🇷🇺 ru",
+    "eng": "🇺🇸 eng",
+}
+
 
 @router.message(F.text.startswith("/start"))
 async def start(message: Message, state: FSMContext):
@@ -41,6 +47,7 @@ async def start(message: Message, state: FSMContext):
         with open("user_lang.json", "r", encoding="utf-8") as file:
             data = json.load(file)
             lang = data.get("user_lang", {}).get(str(user_id), [])[-1]
+            lang = correct_languages[lang.split(" ")[1]]
             user = data.get("user", [])
 
             if user_id in user:
@@ -78,7 +85,8 @@ async def check_phone(message: Message, state: FSMContext):
     data = await state.get_data()
     lang = data['language']
     if message.contact:
-        await state.update_data(phone=message.contact.phone_number)
+        user_phone = "+" + message.contact.phone_number
+        await state.update_data(phone=user_phone)
         await bot.send_message(chat_id=user_id,text=get_text(lang, 'message_text', 'name'), reply_markup=ReplyKeyboardRemove())
         await state.set_state(UserState.fio)
     else:
@@ -98,67 +106,78 @@ async def fio_user(message: Message, state: FSMContext):
     data = await state.get_data()
     lang = data['language']
     ok = True
-    for i in message.text:
-        if not i.isalpha():
-            await bot.send_message(chat_id=user_id,text=get_text(lang, 'message_text', 'error_name'))
-            ok = False
-            break
+
+    # Check if the name consists of alphabetic characters and spaces
+    if not all(i.isalpha() or i.isspace() for i in message.text):
+        await bot.send_message(chat_id=user_id, text=get_text(lang, 'message_text', 'error_name'))
+        ok = False
+
+    # If valid, update user data and send confirmation
     if ok:
         await state.update_data(user_name=message.text)
         msg_text = (
             f"{get_text(lang, 'message_text', 'confirmed_userinfo')}\n"
-            f"{get_text(lang, 'message_text', 'conf_phone')} {data["phone"]}\n"
+            f"{get_text(lang, 'message_text', 'conf_phone')} {data['phone']}\n"
             f"{get_text(lang, 'message_text', 'conf_name')} {message.text}"
         )
-
-        await bot.send_message(chat_id=user_id,text=msg_text, reply_markup=kb.conf(lang))
+        await bot.send_message(chat_id=user_id, text=msg_text, reply_markup=kb.conf(lang))
         await state.set_state(UserState.conf)
+
 
 
 
 @router.message(UserState.conf)
 async def conf(message: Message, state: FSMContext):
-     user_id = message.from_user.id
-     data = await state.get_data()
-     lang = data['language']
+    user_id = message.from_user.id
+    data = await state.get_data()
+    lang = data['language']
 
-     file_path = "user_lang.json"
-     if message.text == get_text(lang, "buttons", "confirm"):
-         await bot.send_chat_action(chat_id=user_id, action=ChatAction.TYPING)
-         await bot.send_chat_action(chat_id=user_id, action=ChatAction.TYPING)
-         msg_text = (
-             f"{get_text(lang, 'message_text', 'telefon')} {data["phone"]}\n"
-             f"{get_text(lang, 'message_text', 'ismi')} {data["user_name"]}"
-         )
-         if create_user(data["user_name"], data["phone"], user_id):
-             try:
+    file_path = "user_lang.json"
+    if message.text == get_text(lang, "buttons", "confirm"):
+        await bot.send_chat_action(chat_id=user_id, action=ChatAction.TYPING)
+        await bot.send_chat_action(chat_id=user_id, action=ChatAction.TYPING)
+        msg_text = (
+            f"{get_text(lang, 'message_text', 'telefon')} {data['phone']}\n"
+            f"{get_text(lang, 'message_text', 'ismi')} {data['user_name']}"
+        )
+        if create_user(data["user_name"], data["phone"], user_id):
+            try:
                 await bot.send_message(chat_id=-4937963060, text=msg_text, reply_markup=kb.user_account(user_id, lang))
-             except Exception as e:
-                 print(f"Can't send message to channel: {e}")
+            except Exception as e:
+                print(f"Can't send message to channel: {e}")
 
-             await message.answer(text=get_text(lang, 'message_text', 'menu'), reply_markup=kb.menu(lang))
-             await state.set_state(UserState.mainmenucheck)
+            await message.answer(text=get_text(lang, 'message_text', 'menu'), reply_markup=kb.menu(lang))
+            await state.set_state(UserState.mainmenucheck)
 
+            file_path = "user_lang.json"
+            user_data = {"user_lang": {}, "user": []}
 
-             try:
-                 with open(file_path, "w") as w:
-                     data = {
-                         "user_lang":{user_id:[lang]},
-                         "user":[user_id],
-                     }
-                     json.dump(data, w, indent=4)
-             except FileNotFoundError:
-                 print(f"Can't Open File: {file_path}")
+            # Fayl mavjud emas yoki bo'sh bo'lsa, yangi yaratish
+            try:
+                with open(file_path, "r") as file:
+                    user_data = json.load(file)
+            except (FileNotFoundError, json.JSONDecodeError):
+                # Fayl bo'sh yoki yaroqsiz bo'lsa, yangi yaratish
+                user_data = {"user_lang": {}, "user": []}
 
+            # Yangi ma'lumotlarni qo'shish
+            if user_id not in user_data["user"]:
+                user_data["user_lang"][str(user_id)] = [lang.split(" ")[1]]
+                user_data["user"].append(user_id)
 
-     elif message.text == get_text(lang, "buttons", "rejected"):
-         await bot.send_message(
-             chat_id=user_id,
-             text=translations['start'],
-             reply_markup=kb.start_key(),
-             parse_mode='HTML'
-         )
-         await state.set_state(UserState.language)
+            # Ma'lumotlarni faylga yozish
+            with open(file_path, "w", encoding="utf-8") as w:
+                json.dump(user_data, w, ensure_ascii=False, indent=4)
+
+    elif message.text == get_text(lang, "buttons", "rejected"):
+        await bot.send_message(
+            chat_id=user_id,
+            text=translations['start'],
+            reply_markup=kb.start_key(),
+            parse_mode='HTML'
+        )
+        await state.set_state(UserState.language)
+
 
 
 
@@ -170,7 +189,7 @@ async def main_menu_check(message: Message, state: FSMContext):
     data = await state.get_data()
     lang = data['language']
     if message.text == get_text(lang, "buttons", "loc"):
-        await bot.send_location(chat_id=user_id, latitude=41.3340125, longitude=69.3708906)
+        await bot.send_location(chat_id=user_id, latitude=41.3319662, longitude=69.3715129)
         await message.answer(text=get_text(lang, 'message_text', 'show_location'), reply_markup=kb.back(lang))
         await state.set_state(UserState.back_from_show_location)
 
@@ -214,9 +233,9 @@ async def change_language(message: Message, state: FSMContext):
                 data = json.load(file)
 
             if str(user_id) in data['user_lang']:
-                data['user_lang'][str(user_id)] = [new_lang]
+                data['user_lang'][str(user_id)] = [new_lang.split(" ")[1]]
             else:
-                data['user_lang'][str(user_id)] = [new_lang]
+                data['user_lang'][str(user_id)] = [new_lang.split(" ")[1]]
 
             with open(file_path, "w", encoding="utf-8") as file:
                 json.dump(data, file, ensure_ascii=False, indent=4)
@@ -286,25 +305,30 @@ async def test_start(message: Message, state: FSMContext):
     data = await state.get_data()
     lang = data['language']
 
-    question, answer = await get_random_questions()
+    if message.text == get_text(lang, "buttons", "back"):
+        await message.answer(text=get_text(lang, 'message_text', 'menu'), reply_markup=kb.menu(lang))
+        await state.set_state(UserState.mainmenucheck)
+        return
 
-    await state.update_data(correct_answer=int(answer))
-    await state.update_data(counter=0)
-    await state.update_data(total_questions=1)
+    if message.text == get_text(lang, "buttons", "test_start"):
+        question, answer = await get_random_questions()
+        await state.update_data(correct_answer=int(answer))
+        await state.update_data(counter=0)
+        await state.update_data(total_questions=1)
 
-    await bot.send_poll(
-        chat_id=message.chat.id,
-        question=question[0],
-        options=[
-            f"A) {question[1]}", f"B) {question[2]}",
-            f"C) {question[3]}", f"D) {question[4]}"
-        ],
-        is_anonymous=False,
-        allows_multiple_answers=False,
-        reply_markup=kb.back(lang)
-    )
+        await bot.send_poll(
+            chat_id=message.chat.id,
+            question=question[0],
+            options=[
+                f"A) {question[1]}", f"B) {question[2]}",
+                f"C) {question[3]}", f"D) {question[4]}"
+            ],
+            is_anonymous=False,
+            allows_multiple_answers=False,
+            reply_markup=ReplyKeyboardRemove()
+        )
 
-    await state.set_state(UserState.questions)
+        await state.set_state(UserState.questions)
 
 
 
@@ -350,7 +374,7 @@ async def handle_poll_answer(poll_answer: PollAnswer, state: FSMContext):
         ],
         is_anonymous=False,
         allows_multiple_answers=False,
-        reply_markup=kb.back(lang)
+        reply_markup=ReplyKeyboardRemove()
     )
 
     await state.set_state(UserState.questions)
