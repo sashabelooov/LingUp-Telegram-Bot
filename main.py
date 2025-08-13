@@ -85,8 +85,7 @@ async def check_phone(message: Message, state: FSMContext):
     data = await state.get_data()
     lang = data['language']
     if message.contact:
-        user_phone = "+" + message.contact.phone_number
-        await state.update_data(phone=user_phone)
+        await state.update_data(phone=message.contact.phone_number)
         await bot.send_message(chat_id=user_id,text=get_text(lang, 'message_text', 'name'), reply_markup=ReplyKeyboardRemove())
         await state.set_state(UserState.fio)
     else:
