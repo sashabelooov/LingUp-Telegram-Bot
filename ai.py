@@ -152,7 +152,10 @@ async def ai_response_course_info(lang: str, message_text: str):
             """
 
         response = model.generate_content(prompt)
-        return response.text.strip()
+        
+        cleaned_response = re.sub(r'[^\w\s,().!?&]', '', response.text.strip())
+        
+        return cleaned_response
 
     except Exception as e:
         print("Xatolik:", e)
