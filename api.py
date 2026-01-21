@@ -15,7 +15,6 @@ def create_user(full_name, phone, tg_id, description=None):
         "phone_number": str(phone),
         "tg_id": tg_id,
         "description": description,
-
     }
 
     try:
@@ -23,7 +22,8 @@ def create_user(full_name, phone, tg_id, description=None):
         if response.status_code == 201:
             print("User created successfully.")
             return True
-
+        print(response.text)
+        print(response.status_code)
         return response.status_code
 
     except requests.exceptions.RequestException as e:

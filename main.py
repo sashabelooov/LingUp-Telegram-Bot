@@ -17,6 +17,7 @@ from test import get_random_questions
 from api import create_user
 
 TOKEN = config('TOKEN')
+CHAT_ID = config('CHAT_ID')
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
 router = Router()
@@ -38,6 +39,28 @@ correct_languages = {
     "eng": "🇺🇸 eng",
 }
 
+
+import re
+
+def normalize_uz_phone(raw: str) -> str | None:
+    if not raw:
+        return None
+
+    digits = re.sub(r"\D", "", raw)
+
+    if len(digits) == 9:
+        digits = "998" + digits
+
+    if len(digits) == 12 and digits.startswith("998"):
+        phone = "+" + digits
+    elif len(digits) == 13 and raw.strip().startswith("+") and digits.startswith("998"):
+        phone = "+" + digits  # ehtiyot uchun
+    else:
+        return None
+
+    if re.fullmatch(r"\+998\d{9}", phone):
+        return phone
+    return None
 
 @router.message(F.text.startswith("/start"))
 async def start(message: Message, state: FSMContext):
@@ -83,20 +106,29 @@ async def ask_phone(message: Message, state: FSMContext):
 async def check_phone(message: Message, state: FSMContext):
     user_id = message.from_user.id
     data = await state.get_data()
-    lang = data['language']
+    lang = data["language"]
+
+    raw_phone = None
     if message.contact:
-        await state.update_data(phone=message.contact.phone_number)
-        await bot.send_message(chat_id=user_id,text=get_text(lang, 'message_text', 'name'), reply_markup=ReplyKeyboardRemove())
+        raw_phone = message.contact.phone_number
+    else:
+        raw_phone = message.text
+
+    phone = normalize_uz_phone(raw_phone)
+
+    if phone:
+        await state.update_data(phone=phone)
+        await bot.send_message(
+            chat_id=user_id,
+            text=get_text(lang, "message_text", "name"),
+            reply_markup=ReplyKeyboardRemove()
+        )
         await state.set_state(UserState.fio)
     else:
-        text = message.text
-        if message.text.startswith("+998") and len(text) == 13 and text[1:].isdigit():
-            await state.update_data(phone=message.text)
-            await bot.send_message(chat_id=user_id,text=get_text(lang, 'message_text', 'name'), reply_markup=ReplyKeyboardRemove())
-            await state.set_state(UserState.fio)
-        else:
-            await bot.send_message(chat_id=user_id,text=get_text(lang, 'message_text', 'error_phone'))
-
+        await bot.send_message(
+            chat_id=user_id,
+            text=get_text(lang, "message_text", "error_phone")
+        )
 
 
 @router.message(UserState.fio)
@@ -106,12 +138,10 @@ async def fio_user(message: Message, state: FSMContext):
     lang = data['language']
     ok = True
 
-    # Check if the name consists of alphabetic characters and spaces
     if not all(i.isalpha() or i.isspace() for i in message.text):
         await bot.send_message(chat_id=user_id, text=get_text(lang, 'message_text', 'error_name'))
         ok = False
 
-    # If valid, update user data and send confirmation
     if ok:
         await state.update_data(user_name=message.text)
         msg_text = (
@@ -141,7 +171,7 @@ async def conf(message: Message, state: FSMContext):
         )
         if create_user(data["user_name"], data["phone"], user_id):
             try:
-                await bot.send_message(chat_id=-4937963060, text=msg_text, reply_markup=kb.user_account(user_id, lang))
+                await bot.send_message(chat_id=CHAT_ID, text=msg_text, reply_markup=kb.user_account(user_id, lang))
             except Exception as e:
                 print(f"Can't send message to channel: {e}")
 
