@@ -1,3 +1,5 @@
+import re
+
 from google import generativeai as genai
 from decouple import config
 
@@ -8,10 +10,8 @@ async def ai_response(lang: str, message_text: str):
         api_key = config('GEMINI_API_KEY')
         genai.configure(api_key=api_key)
 
-        # Modelni chaqirish
         model = genai.GenerativeModel("gemini-2.5-flash")
 
-        # Tilga mos aniq prompt
         if lang.endswith("uz"):
             prompt = (
                 "Quyidagi savolga faqat bitta aniq, tushunarli va foydalanuvchiga mos javob yoz. "

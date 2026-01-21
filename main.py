@@ -151,20 +151,16 @@ async def conf(message: Message, state: FSMContext):
             file_path = "user_lang.json"
             user_data = {"user_lang": {}, "user": []}
 
-            # Fayl mavjud emas yoki bo'sh bo'lsa, yangi yaratish
             try:
                 with open(file_path, "r") as file:
                     user_data = json.load(file)
             except (FileNotFoundError, json.JSONDecodeError):
-                # Fayl bo'sh yoki yaroqsiz bo'lsa, yangi yaratish
                 user_data = {"user_lang": {}, "user": []}
 
-            # Yangi ma'lumotlarni qo'shish
             if user_id not in user_data["user"]:
                 user_data["user_lang"][str(user_id)] = [lang.split(" ")[1]]
                 user_data["user"].append(user_id)
 
-            # Ma'lumotlarni faylga yozish
             with open(file_path, "w", encoding="utf-8") as w:
                 json.dump(user_data, w, ensure_ascii=False, indent=4)
 
@@ -181,7 +177,6 @@ async def conf(message: Message, state: FSMContext):
 
 
 
-# ******** CHECK MAIN MENU BUTTONS ******** #
 @router.message(UserState.mainmenucheck)
 async def main_menu_check(message: Message, state: FSMContext):
     user_id = message.from_user.id
