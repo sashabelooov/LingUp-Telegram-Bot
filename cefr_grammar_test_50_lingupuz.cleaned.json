@@ -1,0 +1,493 @@
+{
+  "meta": {
+    "name": "CEFR Grammar Test (50) - LingUp.uz",
+    "question_count": 50,
+    "options_per_question": 3,
+    "answer_format": "A/B/C",
+    "score_levels": [
+      {
+        "min": 0,
+        "max": 10,
+        "level": "A1"
+      },
+      {
+        "min": 11,
+        "max": 20,
+        "level": "A2"
+      },
+      {
+        "min": 21,
+        "max": 30,
+        "level": "B1"
+      },
+      {
+        "min": 31,
+        "max": 40,
+        "level": "B2"
+      },
+      {
+        "min": 41,
+        "max": 50,
+        "level": "C1"
+      }
+    ]
+  },
+  "tests": {
+    "CEFR Grammar Test (50)": {
+      "questions": {
+        "1": {
+          "question": "She ___ a student.",
+          "options": [
+            "is",
+            "are",
+            "am"
+          ]
+        },
+        "2": {
+          "question": "I ___ from Uzbekistan.",
+          "options": [
+            "are",
+            "am",
+            "is"
+          ]
+        },
+        "3": {
+          "question": "They ___ at home now.",
+          "options": [
+            "is",
+            "are",
+            "am"
+          ]
+        },
+        "4": {
+          "question": "He ___ two brothers.",
+          "options": [
+            "have",
+            "has",
+            "having"
+          ]
+        },
+        "5": {
+          "question": "We ___ TV every evening.",
+          "options": [
+            "watch",
+            "watches",
+            "watching"
+          ]
+        },
+        "6": {
+          "question": "My sister ___ to school by bus.",
+          "options": [
+            "go",
+            "goes",
+            "going"
+          ]
+        },
+        "7": {
+          "question": "There ___ a book on the table.",
+          "options": [
+            "are",
+            "is",
+            "be"
+          ]
+        },
+        "8": {
+          "question": "There ___ many people here.",
+          "options": [
+            "is",
+            "are",
+            "be"
+          ]
+        },
+        "9": {
+          "question": "___ you like tea?",
+          "options": [
+            "Do",
+            "Does",
+            "Are"
+          ]
+        },
+        "10": {
+          "question": "___ she speak English?",
+          "options": [
+            "Do",
+            "Does",
+            "Is"
+          ]
+        },
+        "11": {
+          "question": "Yesterday I ___ to the market.",
+          "options": [
+            "go",
+            "went",
+            "gone"
+          ]
+        },
+        "12": {
+          "question": "He ___ a movie last night.",
+          "options": [
+            "watch",
+            "watched",
+            "watches"
+          ]
+        },
+        "13": {
+          "question": "We ___ not hungry now.",
+          "options": [
+            "is",
+            "are",
+            "am"
+          ]
+        },
+        "14": {
+          "question": "You ___ wear a seatbelt.",
+          "options": [
+            "should",
+            "shouldn’t",
+            "mustn’t"
+          ]
+        },
+        "15": {
+          "question": "Can you ___ me, please?",
+          "options": [
+            "help",
+            "helped",
+            "helps"
+          ]
+        },
+        "16": {
+          "question": "I ___ to music at the moment.",
+          "options": [
+            "listen",
+            "listening",
+            "am listening"
+          ]
+        },
+        "17": {
+          "question": "Look! It ___ .",
+          "options": [
+            "rain",
+            "rains",
+            "is raining"
+          ]
+        },
+        "18": {
+          "question": "She ___ English for two years.",
+          "options": [
+            "studies",
+            "has studied",
+            "studied"
+          ]
+        },
+        "19": {
+          "question": "I have never ___ sushi.",
+          "options": [
+            "eat",
+            "ate",
+            "eaten"
+          ]
+        },
+        "20": {
+          "question": "We ___ already finished.",
+          "options": [
+            "have",
+            "has",
+            "are"
+          ]
+        },
+        "21": {
+          "question": "I think it ___ tomorrow.",
+          "options": [
+            "will rain",
+            "rains",
+            "rained"
+          ]
+        },
+        "22": {
+          "question": "If it rains, we ___ inside.",
+          "options": [
+            "stay",
+            "will stay",
+            "stayed"
+          ]
+        },
+        "23": {
+          "question": "This book is ___ than that one.",
+          "options": [
+            "more interesting",
+            "interestinger",
+            "most interesting"
+          ]
+        },
+        "24": {
+          "question": "I don’t have ___ time today.",
+          "options": [
+            "many",
+            "much",
+            "a few"
+          ]
+        },
+        "25": {
+          "question": "There are ___ apples left.",
+          "options": [
+            "much",
+            "many",
+            "a little"
+          ]
+        },
+        "26": {
+          "question": "He is good ___ math.",
+          "options": [
+            "in",
+            "at",
+            "on"
+          ]
+        },
+        "27": {
+          "question": "I’m looking forward ___ you.",
+          "options": [
+            "to seeing",
+            "see",
+            "to see"
+          ]
+        },
+        "28": {
+          "question": "She told me ___ quiet.",
+          "options": [
+            "be",
+            "to be",
+            "being"
+          ]
+        },
+        "29": {
+          "question": "The meeting was cancelled ___ the weather.",
+          "options": [
+            "because",
+            "because of",
+            "so"
+          ]
+        },
+        "30": {
+          "question": "I’ve lived here ___ 2018.",
+          "options": [
+            "for",
+            "since",
+            "during"
+          ]
+        },
+        "31": {
+          "question": "The car ___ yesterday.",
+          "options": [
+            "was repaired",
+            "repaired",
+            "is repair"
+          ]
+        },
+        "32": {
+          "question": "This is the man ___ helped me.",
+          "options": [
+            "who",
+            "which",
+            "where"
+          ]
+        },
+        "33": {
+          "question": "That’s the place ___ I was born.",
+          "options": [
+            "which",
+            "where",
+            "who"
+          ]
+        },
+        "34": {
+          "question": "She said she ___ busy.",
+          "options": [
+            "is",
+            "was",
+            "be"
+          ]
+        },
+        "35": {
+          "question": "You ___ have told me earlier! (criticism)",
+          "options": [
+            "must",
+            "should",
+            "could"
+          ]
+        },
+        "36": {
+          "question": "If I ___ more time, I would travel more.",
+          "options": [
+            "have",
+            "had",
+            "will have"
+          ]
+        },
+        "37": {
+          "question": "He ___ working here since June.",
+          "options": [
+            "has been",
+            "is",
+            "was"
+          ]
+        },
+        "38": {
+          "question": "By the time we arrived, they ___.",
+          "options": [
+            "left",
+            "had left",
+            "have left"
+          ]
+        },
+        "39": {
+          "question": "I’ll call you when I ___ home.",
+          "options": [
+            "get",
+            "will get",
+            "got"
+          ]
+        },
+        "40": {
+          "question": "She is ___ honest person.",
+          "options": [
+            "a",
+            "an",
+            "the"
+          ]
+        },
+        "41": {
+          "question": "Not only ___ late, but he also forgot the documents.",
+          "options": [
+            "he was",
+            "was he",
+            "he is"
+          ]
+        },
+        "42": {
+          "question": "Hardly ___ the train when it started moving.",
+          "options": [
+            "we had boarded",
+            "had we boarded",
+            "we"
+          ]
+        },
+        "43": {
+          "question": "I’d rather you ___ me the truth.",
+          "options": [
+            "tell",
+            "told",
+            "will tell"
+          ]
+        },
+        "44": {
+          "question": "It’s high time we ___.",
+          "options": [
+            "leave",
+            "left",
+            "will leave"
+          ]
+        },
+        "45": {
+          "question": "Were he to apologize, I ___ him.",
+          "options": [
+            "forgive",
+            "would forgive",
+            "will forgive"
+          ]
+        },
+        "46": {
+          "question": "No sooner ___ than the lights went out.",
+          "options": [
+            "we sat down",
+            "had we sat down",
+            "we have sat down"
+          ]
+        },
+        "47": {
+          "question": "She speaks as if she ___ everything.",
+          "options": [
+            "knows",
+            "knew",
+            "had known"
+          ]
+        },
+        "48": {
+          "question": "The proposal, ___ by the committee, was rejected.",
+          "options": [
+            "having reviewed",
+            "reviewed",
+            "reviewing"
+          ]
+        },
+        "49": {
+          "question": "He insisted that she ___ present at the meeting.",
+          "options": [
+            "is",
+            "be",
+            "was"
+          ]
+        },
+        "50": {
+          "question": "So difficult ___ that many gave up.",
+          "options": [
+            "it was",
+            "was it",
+            "it is"
+          ]
+        }
+      },
+      "answers": {
+        "1": "A",
+        "2": "B",
+        "3": "B",
+        "4": "B",
+        "5": "A",
+        "6": "B",
+        "7": "B",
+        "8": "B",
+        "9": "A",
+        "10": "B",
+        "11": "B",
+        "12": "B",
+        "13": "A",
+        "14": "A",
+        "15": "C",
+        "16": "C",
+        "17": "B",
+        "18": "C",
+        "19": "A",
+        "20": "A",
+        "21": "B",
+        "22": "A",
+        "23": "B",
+        "24": "B",
+        "25": "B",
+        "26": "A",
+        "27": "B",
+        "28": "B",
+        "29": "B",
+        "30": "A",
+        "31": "A",
+        "32": "A",
+        "33": "B",
+        "34": "B",
+        "35": "B",
+        "36": "B",
+        "37": "A",
+        "38": "B",
+        "39": "A",
+        "40": "B",
+        "41": "B",
+        "42": "B",
+        "43": "B",
+        "44": "B",
+        "45": "B",
+        "46": "B",
+        "47": "B",
+        "48": "B",
+        "49": "B",
+        "50": "A"
+      }
+    }
+  }
+}

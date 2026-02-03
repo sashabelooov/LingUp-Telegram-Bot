@@ -13,7 +13,7 @@ from aiogram import F
 from state import UserState
 import keyboards as kb
 from ai import ai_response_course_info
-from test import get_random_questions
+from test import tests, send_next_question
 from api import create_user
 
 TOKEN = config('TOKEN')
@@ -222,7 +222,11 @@ async def main_menu_check(message: Message, state: FSMContext):
         await state.set_state(UserState.back_from_show_phone)
 
     elif message.text == get_text(lang, "buttons", "price"):
-        await message.answer(text=get_text(lang, 'message_text', 'course_price'), reply_markup=kb.back(lang))
+        await message.answer(
+            text=get_text(lang, "message_text", "course_price"),
+            reply_markup=kb.back(lang),
+            parse_mode="HTML",
+        )
         await state.set_state(UserState.back_from_price)
 
     elif message.text == get_text(lang, "buttons", "course_info_menu"):
@@ -323,36 +327,39 @@ async def back_from_show_location(message: Message, state: FSMContext):
 
 
 
+from test import tests, send_next_question, get_cefr_level  # get_cefr_level ham kerak bo‘ladi
+
 @router.message(UserState.test_start)
 async def test_start(message: Message, state: FSMContext):
-    user_id = message.from_user.id
     data = await state.get_data()
-    lang = data['language']
+    lang = data["language"]
 
     if message.text == get_text(lang, "buttons", "back"):
-        await message.answer(text=get_text(lang, 'message_text', 'menu'), reply_markup=kb.menu(lang))
+        await message.answer(text=get_text(lang, "message_text", "menu"), reply_markup=kb.menu(lang))
         await state.set_state(UserState.mainmenucheck)
         return
 
     if message.text == get_text(lang, "buttons", "test_start"):
-        question, answer = await get_random_questions()
-        await state.update_data(correct_answer=int(answer))
-        await state.update_data(counter=0)
-        await state.update_data(total_questions=1)
+        level = "CEFR Grammar Test (50)"
 
-        await bot.send_poll(
-            chat_id=message.chat.id,
-            question=question[0],
-            options=[
-                f"A) {question[1]}", f"B) {question[2]}",
-                f"C) {question[3]}", f"D) {question[4]}"
-            ],
-            is_anonymous=False,
-            allows_multiple_answers=False,
-            reply_markup=ReplyKeyboardRemove()
+        q_keys = list(tests[level]["questions"].keys())
+        try:
+            q_keys = sorted(q_keys, key=int)
+        except ValueError:
+            q_keys = sorted(q_keys)
+
+        await state.update_data(
+            level=level,
+            q_keys=q_keys,
+            q_index=0,
+            counter=0,
+            total_questions=0,
+            chat_id=message.chat.id
         )
 
+        await send_next_question(bot, state, chat_id=message.chat.id, limit=50)
         await state.set_state(UserState.questions)
+
 
 
 
@@ -360,52 +367,41 @@ async def test_start(message: Message, state: FSMContext):
 @router.poll_answer()
 async def handle_poll_answer(poll_answer: PollAnswer, state: FSMContext):
     data = await state.get_data()
-    lang = data['language']
-    user_id = poll_answer.user.id
-    selected = poll_answer.option_ids[0]
-
-    correct = data.get("correct_answer")
-    counter = data.get("counter", 0)
-    total = data.get("total_questions", 1)
-
-    # To‘g‘ri javob bo‘lsa, counter ni oshiramiz
-    if selected == correct:
-        counter += 1
-
-    total += 1
-
-    if total > 10:
-        msg_text = get_text(lang, 'message_text', 'result_test')
-        replace_counter = msg_text.format(counter=counter)
-
-        await bot.send_message(chat_id=user_id, text=replace_counter, reply_markup=ReplyKeyboardRemove())
-        await bot.send_message(chat_id=user_id, text=get_text(lang, 'message_text', 'menu'), reply_markup=kb.menu(lang))
-        await state.set_state(UserState.mainmenucheck)
+    lang = data.get("language")
+    if not lang:
         return
 
-    # Yangi savol yuboriladi
-    question, answer = await get_random_questions()
-    await state.update_data(correct_answer=int(answer))
+    if not poll_answer.option_ids:
+        return
+
+    selected = poll_answer.option_ids[0]
+    correct = data.get("correct_answer")
+
+    counter = int(data.get("counter", 0))
+    if correct is not None and selected == int(correct):
+        counter += 1
     await state.update_data(counter=counter)
-    await state.update_data(total_questions=total)
 
-    await bot.send_poll(
-        chat_id=user_id,
-        question=question[0],
-        options=[
-            f"A) {question[1]}", f"B) {question[2]}",
-            f"C) {question[3]}", f"D) {question[4]}"
-        ],
-        is_anonymous=False,
-        allows_multiple_answers=False,
-        reply_markup=ReplyKeyboardRemove()
-    )
+    chat_id = data.get("chat_id") or poll_answer.user.id
 
-    await state.set_state(UserState.questions)
+    sent = await send_next_question(bot, state, chat_id=chat_id, limit=50)
 
+    if not sent:
+        cefr_level = get_cefr_level(counter)
 
+        msg_text = get_text(lang, "message_text", "result_test")
+        result_text = msg_text.format(counter=counter)
 
+        result_text += f"\n\nCEFR Level: {cefr_level}"
 
-
-
-
+        await bot.send_message(
+            chat_id=chat_id,
+            text=result_text,
+            reply_markup=ReplyKeyboardRemove()
+        )
+        await bot.send_message(
+            chat_id=chat_id,
+            text=get_text(lang, "message_text", "menu"),
+            reply_markup=kb.menu(lang)
+        )
+        await state.set_state(UserState.mainmenucheck)
